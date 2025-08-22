@@ -22,3 +22,6 @@ P(word|spam)=(freq. of word in spam + 1)/(total spam words + vocab size)
 P(word|ham)=(freq. of word in ham + 1)/(total ham words + vocab size)
 
 We must use logarithms to prevent numerical underflow.
+
+After Testing,
+Accuracy of the Naive Bayes Classifier on unseen data = 97.48878923766816
