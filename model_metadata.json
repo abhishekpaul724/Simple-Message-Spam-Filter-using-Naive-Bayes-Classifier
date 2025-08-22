@@ -1,0 +1,12 @@
+{
+    "total_spam": 590,
+    "total_ham": 3867,
+    "total_messages": 4457,
+    "probability_of_spam": 0.13237603769351583,
+    "probability_of_ham": 0.8676239623064842,
+    "log_of_probability_of_spam": -2.0221086360467906,
+    "log_of_probability_of_ham": -0.14199688133925872,
+    "total_spam_words": 16088,
+    "total_ham_words": 57632,
+    "vocab_size": 7679
+}
