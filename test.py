@@ -3,18 +3,23 @@ import re
 import json
 import math
 
+#Fetching Model Metadata
 with open("model_metadata.json","r") as f:
     model_metadata=json.load(f)
 
+#Fetching Ham Words Dictionary
 with open("ham_words_dict.json","r") as f:
     ham_words_dict=json.load(f)
 
+#Fetching Spam Words Dictionary
 with open("spam_words_dict.json","r") as f:
     spam_words_dict=json.load(f)
 
+# Tokenizer function to break the message into tokens
 def tokenizer(message):
     return re.findall(r'\b\w+\b',message.lower())
 
+# Classification function to classify the message as spam or ham
 def classify(message):
     words=tokenizer(message)
     log_prob_spam = model_metadata["log_of_probability_of_spam"]
