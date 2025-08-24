@@ -4,20 +4,26 @@ import re
 import json
 import math
 
+# Data Cleaning
 spam=pd.read_csv("spam.csv",usecols=[0,1],names=["label","message"],encoding="latin-1",skiprows=1)
 spam["label"]=spam["label"].map({"ham":0,"spam":1})
 spam.to_csv("refined_data.csv",index=False)
 
+# Reading cleaned data
 refined_data=pd.read_csv("refined_data.csv",usecols=[0,1],encoding="latin-1")
 refined_data=refined_data.sample(frac=1,random_state=42)
+
+# Splitting into training data and test data
 split=int(len(refined_data)*0.8)
 train=refined_data[:split]
 test=refined_data[split:]
 train.to_csv("train.csv",index=False)
 test.to_csv("test.csv",index=False)
 
+# Training data
 train_data=pd.read_csv("train.csv",usecols=[0,1],encoding="latin-1")
 
+# Calculating necessary parameters
 total_spam=(train_data["label"] == 1).sum()
 total_ham=(train_data["label"] == 0).sum()
 total_messages=len(train_data)
@@ -27,9 +33,11 @@ spam_words_dict=defaultdict(int)
 total_ham_words=0
 total_spam_words=0
 
+# Tokenizer function to break the message into tokens
 def tokenizer(message):
     return re.findall(r'\b\w+\b',message.lower())
 
+# Calculating frequency of each word in the messages
 for label,message in zip(train_data["label"],train_data["message"]):
     words=tokenizer(message)
     for word in words:
@@ -43,6 +51,7 @@ for label,message in zip(train_data["label"],train_data["message"]):
 vocabulary = set(spam_words_dict.keys()) | set(ham_words_dict.keys())
 vocab_size=len(vocabulary)
 
+# Creating JSON files to store the parameters and metrics
 with open("spam_words_dict.json","w") as f:
     json.dump(spam_words_dict,f,indent=4)
 
