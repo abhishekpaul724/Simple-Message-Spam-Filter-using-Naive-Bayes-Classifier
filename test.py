@@ -37,10 +37,41 @@ def classify(message):
 test_data=pd.read_csv("test.csv",encoding="latin-1",usecols=[0,1])
 
 correct_predictions=0
+total_actual_positives=0
+total_pred_positives=0
+true_positives=0
+true_negatives=0
+false_positives=0
+false_negatives=0
+
+for label in test_data["label"]:
+    if label == 1:
+        total_actual_positives+=1
 
 for label,message in zip(test_data["label"],test_data["message"]):
-    if classify(message) == label:
+    prediction=classify(message)
+    if prediction == label:
         correct_predictions+=1
+    if prediction == 0:
+        if label == 0:
+            true_negatives+=1
+        elif label == 1:
+            false_negatives+=1
+    if prediction == 1:
+        total_pred_positives+=1
+        if label == 1:
+            true_positives+=1
+        elif label == 0:
+            false_positives+=1
 
 accuracy = (correct_predictions/len(test_data)) * 100
+precision = true_positives/total_pred_positives if total_pred_positives != 0 else 0
+recall = true_positives/total_actual_positives if total_actual_positives != 0 else 0
+print("Metrics(in percentage): ")
 print("Accuracy of the Naive Bayes Classifier on unseen data = ",accuracy)
+print("Precision = ",precision*100)
+print("Recall = ",recall*100)
+print("Confusion Matrix :")
+print(f"{'':<15}{'Pred_Spam':<15}Pred_Ham")
+print(f"{'Actual Spam':<15}{true_positives:<15}{false_negatives}")
+print(f"{'Actual Ham':<15}{false_positives:<15}{true_negatives}")
